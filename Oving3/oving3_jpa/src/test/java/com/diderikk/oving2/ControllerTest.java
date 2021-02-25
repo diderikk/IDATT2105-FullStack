@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,11 +26,6 @@ public class ControllerTest {
     private MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
-
-    @BeforeClass
-    public static void setup(){
-        System.out.println("Test");
-    }
 
     @Test
     public void shouldReturnFirstAuthor() throws Exception {
@@ -62,9 +55,6 @@ public class ControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name", containsStringIgnoringCase("Test")))
         .andExpect(jsonPath("$.email", containsStringIgnoringCase("test@test.no")));
-
-        MvcResult mvcResult = this.mockMvc.perform(get("/authors")).andReturn();
-        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test
