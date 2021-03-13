@@ -1,79 +1,96 @@
 <template>
   <main>
     <h1>{{ title }}</h1>
-    <h2 v-if="showAnswer">{{ answer }}</h2>
+    <h2 v-if="showAnswer" :class="{ error: isError }">{{ answer }}</h2>
     <h2 v-else-if="input.length">{{ currentCalc }}</h2>
     <h2 v-else>0</h2>
     <Keyboard @keyClick="handleKeyClick" />
-    <Log :calculations="calculations"/>
+    <Log :calculations="calculations" />
   </main>
 </template>
 
 <script>
-import Keyboard from "./components/Keyboard"
-import Log from "./components/Log"
+import Keyboard from "./components/Keyboard";
+import Log from "./components/Log";
 
 export default {
-  name: 'App',
+  name: "App",
   components: { Keyboard, Log },
-  data(){
+  data() {
     return {
       title: "Calculator",
       image: "./assets/calculator.jpg",
       input: [],
-      answer: '0',
+      answer: "0",
       showAnswer: false,
-      calculations: []
-    }
+      calculations: [],
+      isError: false,
+    };
   },
   methods: {
-    handleKeyClick(key){
+    handleKeyClick(key) {
       this.showAnswer = false;
-      if((key === '*' || key === '/' || key === '+' || key === '-') && this.answer != '0' && this.input.length === 0){
-        this.input.push('ANS', key);
+      this.isError = false;
+      if (
+        (key === "*" || key === "/" || key === "+" || key === "-") &&
+        this.answer != "0" &&
+        this.input.length === 0
+      ) {
+        this.input.push("ANS", key);
         return;
       }
-      switch(key){
-        case 'DEL':
+      switch (key) {
+        case "DEL":
           this.input.pop();
           break;
-        case 'C':
+        case "C":
           this.input = [];
           break;
-        case '=':
-          this.answer = eval(this.getFullCalculation);
-          if(this.answer % 1 === 0) this.answer = this.answer.toString();
-          else this.answer = this.answer.toFixed(3);
-          this.showAnswer = true;
-          console.log(this.answer);
-
-          this.input.push(" ", key," ", this.answer," ");
-
-          this.calculations.unshift(this.currentCalc);
-
-          this.input = []
+        case "=":
+          this.handleEquals(key);
           break;
         default:
           this.input.push(key);
       }
-    }
+    },
+    handleEquals(key) {
+      try {
+        this.answer = eval(this.getFullCalculation);
+        if (this.answer % 1 === 0) this.answer = this.answer.toString();
+        else this.answer = this.answer.toFixed(3);
+
+        this.input.push(" ", key, " ", this.answer, " ");
+
+        this.calculations.unshift(this.currentCalc);
+      } catch (error) {
+        if (error instanceof SyntaxError) {
+          console.log(error.name + ":", "Error in your syntax");
+          this.answer = "Error in your syntax";
+        } else {
+          console.log(error.name + ":", error.message);
+          this.answer = "Error in your syntax";
+        }
+        this.isError = true;
+      }
+      this.showAnswer = true;
+      this.input = [];
+    },
   },
   computed: {
-    currentCalc(){
+    currentCalc() {
       return this.input.join("");
     },
-    getFullCalculation(){
+    getFullCalculation() {
       let answer = this.answer;
-      this.input.forEach(function(item, index){
-        if(item === 'ANS'){
-            this[index] = answer;
+      this.input.forEach(function (item, index) {
+        if (item === "ANS") {
+          this[index] = answer;
         }
-      }, this.input)
-      console.log(this.input);
+      }, this.input);
       return this.input.join("");
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
@@ -89,7 +106,11 @@ main {
   flex-direction: column;
   align-items: center;
 }
-h2{
+h2,
+p {
   margin: 0;
+}
+.error {
+  color: red;
 }
 </style>
