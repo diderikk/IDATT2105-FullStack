@@ -37,3 +37,10 @@ app.log
 "Full-Stack Bok".*
 configuration
 oving3_jdbc/
+npm-debug.log*
+.env.local
+.env.*.local
+.DS_Store
+node_modules
+/dist
+package-lock.json
