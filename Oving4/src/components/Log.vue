@@ -31,5 +31,7 @@ export default{
         padding: 10px 20px 10px 20px;
         resize: none;
         height: 30vh;
+        overflow: scroll;
+        overflow-x: hidden;
       }
 </style>
