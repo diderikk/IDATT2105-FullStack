@@ -13,7 +13,7 @@ export default {
     return {
       items: [
         "C", "ANS", "DEL", "+", "1", "2", "3","-",
-        "4", "5", "6", "*", "7", "8", "9", "/", "",
+        "4", "5", "6", "*", "7", "8", "9", "/", "#",
         "0", ".", "=",
       ],
     };
@@ -32,7 +32,7 @@ export default {
     width: 25%;
     grid-template-columns: repeat(4, 1fr);
     gap: 5px;
-    margin-bottom: 2%;
+    margin-bottom: 3%;
     padding: 0;
     }
     .button-list{

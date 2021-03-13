@@ -49,7 +49,7 @@ export default {
 
           this.input.push(" ", key," ", this.answer," ");
 
-          this.calculations.push(this.currentCalc);
+          this.calculations.unshift(this.currentCalc);
 
           this.input = []
           break;
@@ -82,12 +82,14 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 10px;
   font-size: 1.6em;
 }
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+h2{
+  margin: 0;
 }
 </style>
